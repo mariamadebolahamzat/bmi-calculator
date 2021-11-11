@@ -1,5 +1,13 @@
+import 'package:bmi_calculator/constants/colors.dart';
+import 'package:bmi_calculator/components/icon_content.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+enum Gender {
+  male,
+  female,
+}
 
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
@@ -9,6 +17,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Gender? selectedGender;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,29 +32,59 @@ class _InputPageState extends State<InputPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: ReusableCard(
-                      cardChild: CardWidget(),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedGender = Gender.male;
+                        });
+                      },
+                      child: ReusableCard(
+                        colour: selectedGender == Gender.male
+                            ? AppColor.activeCardColour
+                            : AppColor.inactiveCardColour,
+                        cardChild: IconContent(
+                          icon: FontAwesomeIcons.mars,
+                          text: 'Male',
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(
-                    child: ReusableCard(
-                      cardChild: CardWidget(),
+                    child: GestureDetector(
+                      onTap: () {
+                        selectedGender = Gender.female;
+                      },
+                      child: ReusableCard(
+                        colour: selectedGender == Gender.female
+                            ? AppColor.activeCardColour
+                            : AppColor.inactiveCardColour,
+                        cardChild: IconContent(
+                          icon: FontAwesomeIcons.venus,
+                          text: 'Female',
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: ReusableCard(),
+              child: ReusableCard(
+                colour: AppColor.inactiveCardColour,
+              ),
             ),
             Expanded(
               child: Row(
                 children: [
                   Expanded(
-                    child: ReusableCard(),
+                    child: ReusableCard(
+                      colour: AppColor.inactiveCardColour,
+                    ),
                   ),
                   Expanded(
-                    child: ReusableCard(),
+                    child: ReusableCard(
+                      colour: AppColor.inactiveCardColour,
+                    ),
                   ),
                 ],
               ),
@@ -57,50 +97,5 @@ class _InputPageState extends State<InputPage> {
             ),
           ],
         ));
-  }
-}
-
-class CardWidget extends StatelessWidget {
-  const CardWidget({
-    Key? key, this.icon, this.text
-  }) : super(key: key);
-
-  final IconData? icon;
-  final String? text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(
-          FontAwesomeIcons.mars,
-          size: 80.0,
-        ),
-        SizedBox(
-          height: 15.0,
-        ),
-        Text(
-          "Male",
-          style: TextStyle(
-              color: Color(0xFF8D8E98), fontSize: 18.0),
-        ),
-      ],
-    );
-  }
-}
-
-class ReusableCard extends StatelessWidget {
-  const ReusableCard({Key? key, this.cardChild}) : super(key: key);
-  final Widget? cardChild;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: cardChild,
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        color: Color(0xFF1D1E33),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-    );
   }
 }
